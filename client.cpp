@@ -1,0 +1,15 @@
+#include <iostream>
+#include <sys/socket.h>
+#include <netinet/in.h> 
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <unistd.h>
+
+
+using namespace std;
+
+int main(void){
+    cout<<"Hello client";
+    return 0;
+}
