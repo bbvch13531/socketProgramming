@@ -10,6 +10,12 @@
 using namespace std;
 
 int main(void){
-    cout<<"Hello client";
+    
+    /*
+    // int connect(int socket, const struct sockaddr *address,
+    // socklen_t address_len);
+    // 
+    */
+   
     return 0;
 }
