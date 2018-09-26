@@ -17,8 +17,8 @@ using namespace std;
 
 int main(void){
     int server_sock, client_sock;
-    int state, client_addr_size;
     struct sockaddr_in server_addr, client_addr;
+    socklen_t client_addr_size;
 
     client_addr_size = sizeof(client_addr);
     /*
@@ -42,6 +42,7 @@ int main(void){
         // 주소 할당에 성공하면 0, 실패하면 -1을 리턴한다.
         cout<<"Bind error"<<endl;
     }
+
     /*
     // int listen(int socket, int backlog);
     // 연결 요청을 기다린다.
@@ -53,7 +54,14 @@ int main(void){
         cout<<"listen error"<<endl;
     }
 
-    
+    /*
+    // int accept (int socket, struct sockaddr *address, socklen_t *address_len);
+    // 연결 요청을 수락한다.
+    // server_sock : 소켓 번호
+    // client_addr : 클라이언트 소켓 구조체
+    // client_addr_size : 클라이언트 소켓 구조체의 크기
+    */
+    client_sock = accept(server_sock, (struct sockaddr*)&client_addr, &client_addr_size);
     cout<<"hello socket" ;
     return 0;
 }
