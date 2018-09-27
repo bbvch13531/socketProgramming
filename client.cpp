@@ -11,6 +11,8 @@
 
 int main(void){
     int client_sock;
+    int data_len;
+    char message[50];
     socklen_t client_addr_size;
     struct sockaddr_in client_addr;
 
@@ -23,9 +25,16 @@ int main(void){
     // 0 : 구체적인 프로토콜을 정의할 때 사용
     */
     client_sock = socket(PF_INET, SOCK_STREAM, 0);
+
+    /*
+    // .sin_family : 주소 체계
+    // .sin_addr.s_addr : IP 주소
+    // .sin_port : 포트번호
+    */
     client_addr.sin_family = AF_INET; 
     client_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
     client_addr.sin_port = htons(PORT); 
+
     /*
     // int connect(int socket, const struct sockaddr *address,
     // socklen_t address_len);
@@ -37,6 +46,22 @@ int main(void){
     if(connect(client_sock, (struct sockaddr*)&client_addr, client_addr_size) == -1){
         printf("Connect error\n");
     }
+
+
+    /*
+    // ssize_t recv(int socket, void *buffer, size_t length, int flags);
+    // 서버에서 데이터를 수신한다.
+    // client_sock : 클라이언트 소켓 번호
+    // message : 전송할 데이터
+    // sizeof(message) : 데이터의 크기
+    // flag : 데이터 전송의 타입을 정의.
+    */
+
+    int flag = 0;
+    data_len = recv(client_sock, (void *)message, sizeof(message) - 1, flag);
+
+    if(data_len!=0) printf("recv : %s\n",(char *)message);
+    // 전송받은 데이터가 있으면 출력
 
     return 0;
 }
