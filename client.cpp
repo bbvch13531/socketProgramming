@@ -1,13 +1,13 @@
 #include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h> 
+#include <arpa/inet.h>
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
 #include <unistd.h>
 
-
-using namespace std;
+#define PORT 8080
 
 int main(void){
     int client_sock;
@@ -23,7 +23,9 @@ int main(void){
     // 0 : 구체적인 프로토콜을 정의할 때 사용
     */
     client_sock = socket(PF_INET, SOCK_STREAM, 0);
-
+    client_addr.sin_family = AF_INET; 
+    client_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    client_addr.sin_port = htons(PORT); 
     /*
     // int connect(int socket, const struct sockaddr *address,
     // socklen_t address_len);
@@ -33,7 +35,7 @@ int main(void){
     // client_addr_size : 클라이언트 소켓 구조체의 크기
     */
     if(connect(client_sock, (struct sockaddr*)&client_addr, client_addr_size) == -1){
-        cout<<"Connect error"<<endl;
+        printf("Connect error\n");
     }
 
     return 0;
