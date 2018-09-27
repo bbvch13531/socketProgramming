@@ -1,13 +1,6 @@
-#include <iostream>
-#include <sys/socket.h>
-#include <netinet/in.h> 
-#include <arpa/inet.h>
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <unistd.h>
+#include "myheader.h"
 
-#define PORT 8080
+using namespace std;
 
 int main(void){
     int client_sock;
@@ -46,7 +39,7 @@ int main(void){
     if(connect(client_sock, (struct sockaddr*)&client_addr, client_addr_size) == -1){
         printf("Connect error\n");
     }
-
+    else printf("Connection established\n");
 
     /*
     // ssize_t recv(int socket, void *buffer, size_t length, int flags);
@@ -57,10 +50,13 @@ int main(void){
     // flag : 데이터 전송의 타입을 정의.
     */
 
-    int flag = 0;
-    data_len = recv(client_sock, (void *)message, sizeof(message) - 1, flag);
+    char send_msg[50] = "Hello server! I'm client";
+    send(client_sock, (void*)send_msg, sizeof(send_msg), 0);
 
-    if(data_len!=0) printf("recv : %s\n",(char *)message);
+    int flag = 0;
+    data_len = recv(client_sock, (void *)message, sizeof(message), flag);
+
+    if(data_len!=0) printf("recv from server: %s\n",(char *)message);
     // 전송받은 데이터가 있으면 출력
 
     /*
@@ -70,6 +66,6 @@ int main(void){
     */
    
     close(client_sock);
-    
+
     return 0;
 }

@@ -4,23 +4,16 @@
 
 // Makefile
 // https://wiki.kldp.org/KoreanDoc/html/GNU-Make/GNU-Make-3.html
-#include <iostream>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netinet/ip.h> 
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <unistd.h>
 
-#define PORT 8080
-#define MAX_CONNECTION 5
+#include "myheader.h"
 
+using namespace std;
 
 int main(void){
     int server_sock, client_sock;
-    int state;
-    char message[50] = "Hello client! I'm server";
+    int state, data_len;
+    char send_msg[50] = "Hello client! I'm server";
+    char recv_msg[50];
     struct sockaddr_in server_addr, client_addr;
     socklen_t client_addr_size;
 
@@ -71,17 +64,19 @@ int main(void){
     */
     client_sock = accept(server_sock, (struct sockaddr*)&client_addr, &client_addr_size);
     
+    recv(client_sock, (void *)recv_msg, sizeof(recv_msg), 0);
+    printf("recv from client : %s\n", (char *)recv_msg);
+
     /*
     // ssize_t send(int socket, const void *buffer, size_t length, int flags);
     // 클라이언트에게 데이터를 전송한다.
     // client_sock : 클라이언트 소켓 번호
-    // message : 전송할 데이터
-    // sizeof(message) : 데이터의 크기
+    // send_msg : 전송할 데이터
+    // sizeof(send_msg) : 데이터의 크기
     // flag : 데이터 전송의 타입을 정의.
     */
-    bool flag = 0;
-    send(client_sock, (void *)message , sizeof(message), flag);
-
+    int flag = 0;
+    send(client_sock, (void *)send_msg , sizeof(send_msg), flag);
 
     printf("Hello socket!\n"); ;
 
@@ -90,7 +85,7 @@ int main(void){
     // 소켓 통신을 종료한다.
     // client_sock : 클라이언트 소켓 번호
     */
-   
+
     close(client_sock);
 
     return 0;
