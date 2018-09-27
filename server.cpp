@@ -2,6 +2,8 @@
 // https://github.com/openbsd/src/blob/master/sys/sys/socket.h
 // http://pubs.opengroup.org/onlinepubs/7908799/xns/socket.html
 
+// Makefile
+// https://wiki.kldp.org/KoreanDoc/html/GNU-Make/GNU-Make-3.html
 #include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -14,10 +16,10 @@
 #define PORT 8080
 #define MAX_CONNECTION 5
 
-using namespace std;
 
 int main(void){
     int server_sock, client_sock;
+    int state;
     char message[50] = "Hello client! I'm server";
     struct sockaddr_in server_addr, client_addr;
     socklen_t client_addr_size;
@@ -31,7 +33,9 @@ int main(void){
     // 0 : 구체적인 프로토콜을 정의할 때 사용
     */
     server_sock = socket(PF_INET, SOCK_STREAM, 0); 
-    
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(PORT);
     /*
     // int bind(int socket, const struct sockaddr *address,
     // socklen_t address_len);
@@ -40,10 +44,10 @@ int main(void){
     // server_addr : 소켓의 주소를 담는 구조체
     // sizeof(server_addr) : 구조체의 크기
     */
-    if(bind(server_sock, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1 ){
-        // 주소 할당에 성공하면 0, 실패하면 -1을 리턴한다.
-        cout<<"Bind error"<<endl;
-    }
+    state = bind(server_sock, (struct sockaddr*)&server_addr, sizeof(server_addr));
+    // 주소 할당에 성공하면 0, 실패하면 -1을 리턴한다.
+    if(state == -1)  printf("Bind error\n");
+    
 
     /*
     // int listen(int socket, int backlog);
@@ -53,7 +57,7 @@ int main(void){
     */
     if(listen(server_sock, MAX_CONNECTION) == -1){
         // 성공하면 0, 실패하면 -1을 리턴한다.
-        cout<<"listen error"<<endl;
+        printf("Listen error\n");
     }
 
     /*
@@ -77,6 +81,6 @@ int main(void){
     send(client_sock, (void *)message , sizeof(message), flag);
 
 
-    cout<<"hello socket" ;
+    printf("Hello socket!\n"); ;
     return 0;
 }
