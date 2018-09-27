@@ -3,10 +3,10 @@ CXX = g++
 all: server client
 
 server: server.cpp
-	$(CXX) -o $@ $<
+	$(CXX) -I../ -o $@ $<
 
 client: client.cpp
-	$(CXX) -o $@ $<
+	$(CXX) -I../ -o $@ $<
 
 clean:
 	rm -f server
