@@ -18,6 +18,7 @@ using namespace std;
 
 int main(void){
     int server_sock, client_sock;
+    char message[50] = "Hello client! I'm server";
     struct sockaddr_in server_addr, client_addr;
     socklen_t client_addr_size;
 
@@ -63,6 +64,19 @@ int main(void){
     // client_addr_size : 클라이언트 소켓 구조체의 크기
     */
     client_sock = accept(server_sock, (struct sockaddr*)&client_addr, &client_addr_size);
+    
+    /*
+    // ssize_t send(int socket, const void *buffer, size_t length, int flags);
+    // 클라이언트에게 데이터를 전송한다.
+    // client_sock : 클라이언트 소켓 번호
+    // message : 전송할 데이터
+    // sizeof(message) : 데이터의 크기
+    // flag : 데이터 전송의 타입을 정의.
+    */
+    bool flag = 0;
+    send(client_sock, (void *)message , sizeof(message), flag);
+
+
     cout<<"hello socket" ;
     return 0;
 }
