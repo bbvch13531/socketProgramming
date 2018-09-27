@@ -55,6 +55,8 @@ int main(void){
     // server_sock : 소켓 번호
     // MAX_CONNECTION : 연결을 기다리는 최대 클라이언트의 수
     */
+    printf("Server is listen in %d\n",PORT);
+    
     if(listen(server_sock, MAX_CONNECTION) == -1){
         // 성공하면 0, 실패하면 -1을 리턴한다.
         printf("Listen error\n");
