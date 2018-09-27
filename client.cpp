@@ -63,5 +63,13 @@ int main(void){
     if(data_len!=0) printf("recv : %s\n",(char *)message);
     // 전송받은 데이터가 있으면 출력
 
+    /*
+    // close(int socket)
+    // 소켓 통신을 종료한다.
+    // client_sock : 클라이언트 소켓 번호
+    */
+   
+    close(client_sock);
+    
     return 0;
 }
