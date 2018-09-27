@@ -12,7 +12,9 @@ using namespace std;
 int main(void){
     int client_sock;
     socklen_t client_addr_size;
-    
+    struct sockaddr_in client_addr;
+
+    client_addr_size = sizeof(client_addr);
     /*
     // int socket(int domain, int type, int protocol);
     // 클라이언트 소켓을 생성한다.
@@ -25,8 +27,14 @@ int main(void){
     /*
     // int connect(int socket, const struct sockaddr *address,
     // socklen_t address_len);
-    // 
+    // 서버로 연결을 요청한다.
+    // client_sock : 클라이언트 소켓 번호
+    // client_addr : 클라이언트 소켓 구조체
+    // client_addr_size : 클라이언트 소켓 구조체의 크기
     */
+    if(connect(client_sock, (struct sockaddr*)&client_addr, client_addr_size) == -1){
+        cout<<"Connect error"<<endl;
+    }
 
     return 0;
 }
