@@ -2,10 +2,10 @@ CXX = g++
 
 all: server client
 
-server: server.cpp
+server: server.cpp myheader.h
 	$(CXX) -I../ -o $@ $<
 
-client: client.cpp
+client: client.cpp myheader.h
 	$(CXX) -I../ -o $@ $<
 
 clean:
