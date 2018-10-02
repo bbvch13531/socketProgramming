@@ -23,9 +23,11 @@ int main(void){
     // 서버 소켓을 생성한다.
     // PF_INET : 인터넷 프로토콜 체계, # define AF_INET 2로 UDP, TCP 프로토콜 이용할 때 사용
     // SOCK_STREAM : 스트림 방식의 소켓 (TCP) 생성
-    // 0 : 구체적인 프로토콜을 정의할 때 사용
+    // IPPROTO_TCP : 구체적인 프로토콜을 정의할 때 사용
     */
-    server_sock = socket(PF_INET, SOCK_STREAM, 0); 
+    server_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+    memset(&server_addr, 0, sizeof(struct sockaddr_in));
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
     server_addr.sin_port = htons(PORT);
@@ -39,8 +41,9 @@ int main(void){
     */
     state = bind(server_sock, (struct sockaddr*)&server_addr, sizeof(server_addr));
     // 주소 할당에 성공하면 0, 실패하면 -1을 리턴한다.
-    if(state == -1)  printf("Bind error\n");
-    
+    if(state == -1) {
+        printf("Bind error\n");
+    }
 
     /*
     // int listen(int socket, int backlog);
@@ -50,7 +53,7 @@ int main(void){
     */
     printf("Server is listen in %d\n",PORT);
 
-    if(listen(server_sock, MAX_CONNECTION) == -1){
+    if(listen(server_sock, MAX_CONNECTION) == -1) {
         // 성공하면 0, 실패하면 -1을 리턴한다.
         printf("Listen error\n");
     }
@@ -63,8 +66,8 @@ int main(void){
     // client_addr_size : 클라이언트 소켓 구조체의 크기
     */
     client_sock = accept(server_sock, (struct sockaddr*)&client_addr, &client_addr_size);
-    
-    recv(client_sock, (void *)recv_msg, sizeof(recv_msg), 0);
+
+    read(client_sock, (void *)recv_msg, sizeof(recv_msg));
     printf("recv from client : %s\n", (char *)recv_msg);
 
     /*
@@ -75,10 +78,8 @@ int main(void){
     // sizeof(send_msg) : 데이터의 크기
     // flag : 데이터 전송의 타입을 정의.
     */
-    int flag = 0;
-    send(client_sock, (void *)send_msg , sizeof(send_msg), flag);
-
-    printf("Hello socket!\n"); ;
+    write(client_sock, send_msg , strlen(send_msg) + 1);
+    printf("Hello socket!\n"); 
 
     /*
     // close(int socket)
