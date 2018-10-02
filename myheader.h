@@ -1,7 +1,7 @@
 #ifndef MYHEADER_H__
 #define MYHEADER_H__
 
-#define PORT 10009
+#define PORT 8080
 #define MAX_CONNECTION 5
 
 #include <iostream>
